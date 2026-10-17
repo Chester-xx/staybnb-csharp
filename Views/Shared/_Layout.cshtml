@@ -12,6 +12,11 @@
             <a asp-area="" asp-controller="Home" asp-action="Index" class="text-2xl font-bold tracking-tight text-brand">StayBNB</a>
             <nav class="flex items-center gap-4">
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="text-sm font-medium text-gray-700 hover:text-brand">Home</a>
+                @if (User.IsInRole("Guest"))
+                {
+                    <a asp-area="" asp-controller="HostApplication" asp-action="Status" class="text-sm font-medium text-gray-700 hover:text-brand">Host Application Status</a>
+                    <a asp-area="" asp-controller="HostApplication" asp-action="Apply" class="text-sm font-medium text-gray-700 hover:text-brand">Become a Host</a>
+                }
                 <partial name="_LoginPartial" />
             </nav>
         </div>

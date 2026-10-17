@@ -299,5 +299,5 @@ C:\Developer\Projects\staybnb-csharp\obj\Debug\net10.0\ref\staybnb-csharp.dll
 C:\Developer\Projects\staybnb-csharp\bin\Debug\net10.0\package-lock.json
 C:\Developer\Projects\staybnb-csharp\bin\Debug\net10.0\package.json
 C:\Developer\Projects\staybnb-csharp\bin\Debug\net10.0\tsconfig.json
-C:\Developer\Projects\staybnb-csharp\obj\Debug\net10.0\compressed\xf6qr1k08q-{0}-6ip51wix1b-6ip51wix1b.gz
 C:\Developer\Projects\staybnb-csharp\obj\Debug\net10.0\compressed\2c84b2p57a-{0}-wrj91n3rr7-wrj91n3rr7.gz
+C:\Developer\Projects\staybnb-csharp\obj\Debug\net10.0\compressed\xf6qr1k08q-{0}-nfpw66dq18-nfpw66dq18.gz

@@ -15,6 +15,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<staybnb_csharp.Services.IActivityLogService, staybnb_csharp.Services.ActivityLogService>();
+builder.Services.AddScoped<staybnb_csharp.Services.INotificationService, staybnb_csharp.Services.NotificationService>();
+builder.Services.AddScoped<staybnb_csharp.Services.IFileStorageService, staybnb_csharp.Services.FileStorageService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -37,6 +39,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // serves files uploaded at runtime (wwwroot/uploads)
 app.UseRouting();
 
 app.UseAuthorization();

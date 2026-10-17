@@ -1,0 +1,58 @@
+@model List<staybnb_csharp.Models.HostApplication>
+@using staybnb_csharp.Models.Enums
+@{
+    ViewData["Title"] = "Host Application Status";
+}
+
+<div class="mx-auto max-w-3xl">
+    <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-3xl font-bold">Host Application Status</h1>
+        @if (!Model.Any(a => a.Status == ApplicationStatus.Pending))
+        {
+            <a asp-action="Apply" class="btn-primary">Apply as a host</a>
+        }
+    </div>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="mb-4 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-800">@success</div>
+    }
+    @if (TempData["Info"] is string info)
+    {
+        <div class="mb-4 rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-800">@info</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="card text-center text-gray-500">You haven't applied to become a host yet.</div>
+    }
+
+    <div class="space-y-4">
+        @foreach (var application in Model)
+        {
+            var badge = application.Status switch
+            {
+                ApplicationStatus.Approved => "bg-green-100 text-green-800",
+                ApplicationStatus.Rejected => "bg-red-100 text-red-800",
+                _ => "bg-amber-100 text-amber-800"
+            };
+
+            <div class="card">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-semibold">@application.Property.Title</h2>
+                        <p class="text-sm text-gray-500">@application.Property.City &middot; Applied @application.AppliedAt.ToLocalTime().ToString("d MMM yyyy")</p>
+                    </div>
+                    <span class="rounded-full px-3 py-1 text-xs font-semibold @badge">@application.Status</span>
+                </div>
+
+                @if (application.Status == ApplicationStatus.Rejected && !string.IsNullOrWhiteSpace(application.RejectionReason))
+                {
+                    <div class="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">
+                        <span class="font-semibold">Reason:</span> @application.RejectionReason
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

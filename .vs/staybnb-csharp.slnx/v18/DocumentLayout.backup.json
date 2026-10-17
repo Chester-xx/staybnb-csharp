@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Developer\\Projects\\staybnb-csharp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8BC16264-2F6F-BEEB-E73D-93E5A0BC4CAA}|staybnb-csharp.csproj|c:\\developer\\projects\\staybnb-csharp\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{8BC16264-2F6F-BEEB-E73D-93E5A0BC4CAA}|staybnb-csharp.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8BC16264-2F6F-BEEB-E73D-93E5A0BC4CAA}|staybnb-csharp.csproj|c:\\developer\\projects\\staybnb-csharp\\services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8BC16264-2F6F-BEEB-E73D-93E5A0BC4CAA}|staybnb-csharp.csproj|solutionrelative:services\\activitylogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -39,12 +43,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Developer\\Projects\\staybnb-csharp\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Developer\\Projects\\staybnb-csharp\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-10-17T15:51:37.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ActivityLogService.cs",
               "DocumentMoniker": "C:\\Developer\\Projects\\staybnb-csharp\\Services\\ActivityLogService.cs",
               "RelativeDocumentMoniker": "Services\\ActivityLogService.cs",
               "ToolTip": "C:\\Developer\\Projects\\staybnb-csharp\\Services\\ActivityLogService.cs",
               "RelativeToolTip": "Services\\ActivityLogService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-17T15:13:26.432Z",
               "EditorCaption": ""

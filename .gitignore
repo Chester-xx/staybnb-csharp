@@ -1,0 +1,11 @@
+# build files
+bin/
+obj/
+
+# user spec
+.vs/
+*.user
+
+
+# deps
+node_modules/
