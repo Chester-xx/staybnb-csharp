@@ -1,0 +1,15 @@
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Cls(string controller) => string.Equals(current, controller, StringComparison.OrdinalIgnoreCase)
+        ? "bg-rose-50 font-semibold text-brand"
+        : "text-gray-700 hover:bg-gray-50";
+}
+<nav class="space-y-1 px-3 pb-6">
+    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Dashboard")">Dashboard</a>
+    @if (User.IsInRole(Roles.SuperAdmin))
+    {
+        <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Users")">Users</a>
+    }
+    <a asp-area="Admin" asp-controller="HostRequests" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("HostRequests")">Host Requests</a>
+    <a asp-area="Admin" asp-controller="ActivityLogs" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("ActivityLogs")">Activity Logs</a>
+</nav>

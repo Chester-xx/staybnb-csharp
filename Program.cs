@@ -17,6 +17,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddScoped<staybnb_csharp.Services.IActivityLogService, staybnb_csharp.Services.ActivityLogService>();
 builder.Services.AddScoped<staybnb_csharp.Services.INotificationService, staybnb_csharp.Services.NotificationService>();
 builder.Services.AddScoped<staybnb_csharp.Services.IFileStorageService, staybnb_csharp.Services.FileStorageService>();
+// Re-check the user's roles on every request so a role swap (e.g. Guest -> Host) applies immediately.
+builder.Services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.Zero);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -45,6 +47,11 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 app.MapControllerRoute(
     name: "default",

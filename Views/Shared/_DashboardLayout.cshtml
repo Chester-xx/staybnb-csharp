@@ -1,0 +1,50 @@
+@{
+    var sidebar = ViewData["Sidebar"] as string ?? "_AdminSidebar";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StayBNB @ViewData["Panel"]</title>
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+</head>
+<body class="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div class="flex min-h-screen flex-col md:flex-row">
+        <aside class="w-full shrink-0 border-b border-gray-200 bg-white md:w-64 md:border-b-0 md:border-r">
+            <div class="px-6 py-5">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-xl font-bold tracking-tight text-brand">
+                    StayBNB <span class="text-sm font-medium text-gray-500">@ViewData["Panel"]</span>
+                </a>
+            </div>
+            <partial name="@sidebar" />
+        </aside>
+
+        <div class="flex min-w-0 flex-1 flex-col">
+            <header class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
+                <h1 class="text-lg font-semibold">@ViewData["Title"]</h1>
+                <div class="flex items-center gap-4">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-sm font-medium text-gray-700 hover:text-brand">Back to site</a>
+                    <partial name="_LoginPartial" />
+                </div>
+            </header>
+
+            <main class="flex-1 p-6">
+                @if (TempData["Success"] is string success)
+                {
+                    <div class="mb-4 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-800">@success</div>
+                }
+                @if (TempData["Error"] is string error)
+                {
+                    <div class="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">@error</div>
+                }
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
