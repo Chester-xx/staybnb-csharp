@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <!--
-    Builds Tailwind CSS and TypeScript on every build. Pre-built output is committed in wwwroot,
-    so if Node.js is not installed (or npm fails) the step is skipped and the build still succeeds.
+    Builds twcss & ts on every build. Prebuilt output is committed in wwwroot
+    if node is not installed / npm fails the step is skipped and the build still succeeds
   -->
   <Target Name="BuildFrontend" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true' And Exists('$(MSBuildProjectDirectory)\package.json')">
     <Exec Command="npm --version" WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" StandardOutputImportance="low" StandardErrorImportance="low" ContinueOnError="true">
