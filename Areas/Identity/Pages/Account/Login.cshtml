@@ -1,0 +1,44 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="mx-auto max-w-md">
+    <div class="card">
+        <h1 class="mb-1 text-2xl font-bold">Welcome back</h1>
+        <p class="mb-6 text-sm text-gray-500">Log in to your StayBNB account.</p>
+
+        <form id="account" method="post" class="space-y-4">
+            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600" role="alert"></div>
+
+            <div>
+                <label asp-for="Input.Email" class="form-label">Email</label>
+                <input asp-for="Input.Email" class="form-input" autocomplete="username" />
+                <span asp-validation-for="Input.Email" class="form-error"></span>
+            </div>
+
+            <div>
+                <label asp-for="Input.Password" class="form-label">Password</label>
+                <input asp-for="Input.Password" class="form-input" autocomplete="current-password" />
+                <span asp-validation-for="Input.Password" class="form-error"></span>
+            </div>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+                <input asp-for="Input.RememberMe" type="checkbox" class="rounded border-gray-300 text-brand focus:ring-brand" />
+                Remember me
+            </label>
+
+            <button id="login-submit" type="submit" class="btn-primary w-full">Log in</button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-gray-500">
+            New to StayBNB?
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="font-medium text-brand hover:underline">Create an account</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

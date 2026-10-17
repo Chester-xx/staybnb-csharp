@@ -1,0 +1,19 @@
+{
+  "name": "staybnb",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i Frontend/css/app.css -o wwwroot/css/app.css --minify",
+    "build:js": "esbuild Frontend/ts/site.ts --bundle --minify --outfile=wwwroot/js/app.js",
+    "build": "npm run build:css && npm run build:js",
+    "watch:css": "tailwindcss -i Frontend/css/app.css -o wwwroot/css/app.css --watch",
+    "watch:js": "esbuild Frontend/ts/site.ts --bundle --outfile=wwwroot/js/app.js --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "esbuild": "^0.28.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  }
+}

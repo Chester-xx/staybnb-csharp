@@ -1,0 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace staybnb_csharp.Models
+{
+    // Database design only; no wishlist functionality is implemented.
+    public class WishlistItem
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string UserId { get; set; } = string.Empty;
+        public ApplicationUser User { get; set; } = null!;
+
+        public int PropertyId { get; set; }
+        public HostProperty Property { get; set; } = null!;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
+}

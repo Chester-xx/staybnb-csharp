@@ -1,0 +1,28 @@
+namespace staybnb_csharp.Models.Enums
+{
+    public enum ApplicationStatus { Pending, Approved, Rejected }
+
+    public enum BookingStatus { Pending, Approved, Rejected, CheckedIn, Cancelled, Completed }
+
+    // Defined for the database design only; not implemented in functionality.
+    public enum PaymentStatus { Pending, Paid, Failed, Refunded }
+
+    public enum PropertyType { Apartment, House, Cabin, Villa, Cottage }
+
+    public enum CheckInStatus { InProgress, Submitted, Verified }
+
+    public enum DocumentStatus { Pending, Verified }
+
+    public enum ActivityType
+    {
+        Login,
+        Registration,
+        RoleChange,
+        HostApplication,
+        BookingStatusChange,
+        CheckIn,
+        Property
+    }
+
+    public enum NotificationType { HostApplication, Booking, CheckIn, Message }
+}
