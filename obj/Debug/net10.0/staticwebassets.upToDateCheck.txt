@@ -1,5 +1,7 @@
+wwwroot\css\app.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\js\app.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -61,10 +63,11 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\css\app.css
-wwwroot\js\app.js
+wwwroot\uploads\properties\20261017T160055848_72e38dcf.png
+C:\Developer\Projects\staybnb-csharp\wwwroot\css\app.css
 C:\Developer\Projects\staybnb-csharp\wwwroot\css\site.css
 C:\Developer\Projects\staybnb-csharp\wwwroot\favicon.ico
+C:\Developer\Projects\staybnb-csharp\wwwroot\js\app.js
 C:\Developer\Projects\staybnb-csharp\wwwroot\js\site.js
 C:\Developer\Projects\staybnb-csharp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Developer\Projects\staybnb-csharp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -125,5 +128,3 @@ C:\Developer\Projects\staybnb-csharp\wwwroot\lib\jquery\dist\jquery.slim.js
 C:\Developer\Projects\staybnb-csharp\wwwroot\lib\jquery\dist\jquery.slim.min.js
 C:\Developer\Projects\staybnb-csharp\wwwroot\lib\jquery\dist\jquery.slim.min.map
 C:\Developer\Projects\staybnb-csharp\wwwroot\lib\jquery\LICENSE.txt
-C:\Developer\Projects\staybnb-csharp\wwwroot\css\app.css
-C:\Developer\Projects\staybnb-csharp\wwwroot\js\app.js

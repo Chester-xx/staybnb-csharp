@@ -21,8 +21,17 @@
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
+  <!--
+    Builds Tailwind CSS and TypeScript on every build. Pre-built output is committed in wwwroot,
+    so if Node.js is not installed (or npm fails) the step is skipped and the build still succeeds.
+  -->
+  <Target Name="BuildFrontend" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true' And Exists('$(MSBuildProjectDirectory)\package.json')">
+    <Exec Command="npm --version" WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" StandardOutputImportance="low" StandardErrorImportance="low" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="NpmExitCode" />
+    </Exec>
+    <Message Importance="high" Text="Node.js/npm not found - skipping frontend build and using the pre-built assets in wwwroot." Condition="'$(NpmExitCode)' != '0'" />
+    <Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)" Condition="'$(NpmExitCode)' == '0' And !Exists('$(MSBuildProjectDirectory)\node_modules')" IgnoreStandardErrorWarningFormat="true" ContinueOnError="WarnAndContinue" />
+    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" Condition="'$(NpmExitCode)' == '0'" IgnoreStandardErrorWarningFormat="true" ContinueOnError="WarnAndContinue" />
+  </Target>
 
 </Project>

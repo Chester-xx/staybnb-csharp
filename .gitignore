@@ -2,10 +2,17 @@
 bin/
 obj/
 
-# user spec
+# user spec / misc
 .vs/
 *.user
-
+*.suo
+.vscode/
+TestResults/
+*.log
+Thumbs.db
 
 # deps
 node_modules/
+
+# priv data
+PrivateUploads/
