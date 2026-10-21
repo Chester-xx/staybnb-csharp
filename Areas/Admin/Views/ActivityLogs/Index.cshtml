@@ -1,0 +1,65 @@
+@model ActivityLogListViewModel
+@{
+    ViewData["Title"] = "Activity Logs";
+}
+
+<form asp-action="Index" method="get" class="mb-4 flex max-w-sm gap-2">
+    <select name="type" asp-items="Html.GetEnumSelectList<ActivityType>()" class="form-input">
+        <option value="">All activity types</option>
+    </select>
+    <button type="submit" class="btn-primary">Filter</button>
+</form>
+
+<div class="card overflow-x-auto p-0">
+    @if (!Model.Items.Any())
+    {
+        <p class="p-6 text-sm text-gray-500">No activity found.</p>
+    }
+    else
+    {
+        <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr>
+                    <th class="px-4 py-3">User</th>
+                    <th class="px-4 py-3">Type</th>
+                    <th class="px-4 py-3">Action</th>
+                    <th class="px-4 py-3">Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var log in Model.Items)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@log.User.FullName<div class="text-xs text-gray-400">@log.User.Email</div></td>
+                        <td class="px-4 py-3"><span class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium">@log.ActivityType</span></td>
+                        <td class="px-4 py-3">@log.Action</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">@log.CreatedAt.ToLocalTime().ToString("d MMM yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="mt-4 flex items-center justify-between text-sm">
+        @if (Model.Page > 1)
+        {
+            <a asp-action="Index" asp-route-type="@Model.Type" asp-route-page="@(Model.Page - 1)" class="btn-secondary">Previous</a>
+        }
+        else
+        {
+            <span></span>
+        }
+        <span class="text-gray-500">Page @Model.Page of @Model.TotalPages</span>
+        @if (Model.Page < Model.TotalPages)
+        {
+            <a asp-action="Index" asp-route-type="@Model.Type" asp-route-page="@(Model.Page + 1)" class="btn-secondary">Next</a>
+        }
+        else
+        {
+            <span></span>
+        }
+    </div>
+}

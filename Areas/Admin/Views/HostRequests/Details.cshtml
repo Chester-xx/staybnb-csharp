@@ -1,0 +1,65 @@
+@model HostApplication
+@{
+    ViewData["Title"] = "Review Application";
+    var property = Model.Property;
+}
+
+<div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to host requests</a></div>
+
+<div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+    <div class="card xl:col-span-2">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold">@property.Title</h2>
+                <p class="text-sm text-gray-500">@property.PropertyType &middot; @property.City</p>
+            </div>
+            <partial name="_ApplicationStatusBadge" model="Model.Status" />
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            @foreach (var image in property.Images)
+            {
+                <a href="~/uploads/properties/@image.ImageUrl" target="_blank">
+                    <img src="~/uploads/properties/@image.ImageUrl" alt="@property.Title" class="h-32 w-full rounded-lg object-cover" />
+                </a>
+            }
+        </div>
+
+        <dl class="mt-6 space-y-3 text-sm">
+            <div><dt class="font-semibold">Description</dt><dd class="whitespace-pre-line text-gray-700">@property.Description</dd></div>
+            <div><dt class="font-semibold">Address</dt><dd class="text-gray-700">@property.Address, @property.City</dd></div>
+            <div><dt class="font-semibold">Price per night</dt><dd class="text-gray-700">R @property.PricePerNight.ToString("N2")</dd></div>
+        </dl>
+    </div>
+
+    <div class="space-y-6">
+        <div class="card text-sm">
+            <h3 class="mb-2 font-semibold">Applicant</h3>
+            <p>@Model.ApplicationUser.FullName</p>
+            <p class="text-gray-500">@Model.ApplicationUser.Email</p>
+            <p class="mt-2 text-gray-500">Applied @Model.AppliedAt.ToLocalTime().ToString("d MMM yyyy HH:mm")</p>
+        </div>
+
+        @if (Model.Status == ApplicationStatus.Pending)
+        {
+            <div class="card space-y-4">
+                <form asp-action="Approve" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn-primary w-full">Approve application</button>
+                </form>
+
+                <form asp-action="Reject" asp-route-id="@Model.Id" method="post" class="space-y-2 border-t border-gray-100 pt-4">
+                    <label for="reason" class="form-label">Rejection reason</label>
+                    <textarea id="reason" name="reason" rows="3" maxlength="500" required class="form-input"></textarea>
+                    <button type="submit" class="btn-secondary w-full text-red-600">Reject application</button>
+                </form>
+            </div>
+        }
+        else if (Model.Status == ApplicationStatus.Rejected && !string.IsNullOrWhiteSpace(Model.RejectionReason))
+        {
+            <div class="card text-sm">
+                <h3 class="mb-2 font-semibold">Rejection reason</h3>
+                <p class="text-gray-700">@Model.RejectionReason</p>
+            </div>
+        }
+    </div>
+</div>

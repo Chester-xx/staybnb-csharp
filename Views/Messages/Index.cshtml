@@ -1,0 +1,44 @@
+@model List<ConversationSummary>
+@{
+    ViewData["Title"] = "Messages";
+}
+
+<div class="mx-auto max-w-3xl">
+    <div class="mb-4 flex justify-end">
+        <a asp-action="Compose" class="btn-primary">New message</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card text-center text-gray-500">You have no messages yet.</div>
+    }
+
+    <div class="space-y-2">
+        @foreach (var conversation in Model)
+        {
+            var preview = conversation.Last.Content.Length > 90
+                ? conversation.Last.Content[..90] + "…"
+                : conversation.Last.Content;
+            var unread = conversation.Unread > 0;
+
+            <a asp-action="Thread" asp-route-id="@conversation.Other.Id"
+               class="card flex items-center gap-4 p-4 hover:bg-gray-50 @(unread ? "border-brand/40 bg-rose-50" : "")">
+                <img src="@Url.Action("Show", "ProfilePictures", new { area = "", id = conversation.Other.Id, v = conversation.Other.ProfilePictureUrl })"
+                     alt="" class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between gap-3">
+                        <p class="truncate text-sm @(unread ? "font-semibold" : "font-medium")">@conversation.Other.FullName</p>
+                        <p class="shrink-0 text-xs text-gray-400">@conversation.Last.Timestamp.ToLocalTime().ToString("d MMM HH:mm")</p>
+                    </div>
+                    <p class="truncate text-sm @(unread ? "text-gray-900" : "text-gray-500")">
+                        @(conversation.Last.SenderId == conversation.Other.Id ? "" : "You: ")@preview
+                    </p>
+                </div>
+                @if (unread)
+                {
+                    <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-xs font-semibold text-white">@conversation.Unread</span>
+                }
+            </a>
+        }
+    </div>
+</div>

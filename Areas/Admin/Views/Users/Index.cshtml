@@ -1,0 +1,108 @@
+@model UserManagementViewModel
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<form asp-action="Index" method="get" class="mb-4 flex max-w-md gap-2">
+    <input name="search" value="@Model.Search" placeholder="Search by name or email" class="form-input" />
+    <button type="submit" class="btn-primary">Search</button>
+</form>
+
+@* Guests *@
+<div class="card overflow-x-auto p-0">
+    <h2 class="px-4 pt-4 text-lg font-semibold">Guests <span class="text-sm font-normal text-gray-400">(@Model.Guests.Count)</span></h2>
+    @if (!Model.Guests.Any())
+    {
+        <p class="p-4 text-sm text-gray-500">No guests found.</p>
+    }
+    else
+    {
+        <table class="mt-2 w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Joined</th><th class="px-4 py-3"></th></tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var guest in Model.Guests)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@guest.FullName</td>
+                        <td class="px-4 py-3 text-gray-500">@guest.Email</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">@guest.CreatedAt.ToLocalTime().ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3 text-right">
+                            <form asp-action="Promote" asp-route-id="@guest.Id" method="post"
+                                  onsubmit="return confirm('Promote this guest to Admin?');">
+                                <button type="submit" class="btn-secondary px-3 py-1.5">Promote to Admin</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@* Hosts *@
+<div class="card mt-6 overflow-x-auto p-0">
+    <h2 class="px-4 pt-4 text-lg font-semibold">Hosts <span class="text-sm font-normal text-gray-400">(@Model.Hosts.Count)</span></h2>
+    @if (!Model.Hosts.Any())
+    {
+        <p class="p-4 text-sm text-gray-500">No hosts found.</p>
+    }
+    else
+    {
+        <table class="mt-2 w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Joined</th><th class="px-4 py-3"></th></tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var host in Model.Hosts)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@host.FullName</td>
+                        <td class="px-4 py-3 text-gray-500">@host.Email</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">@host.CreatedAt.ToLocalTime().ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3 text-right">
+                            <form asp-action="MakeGuest" asp-route-id="@host.Id" method="post"
+                                  onsubmit="return confirm('Change this host back to a Guest? Their listings will be deactivated.');">
+                                <button type="submit" class="btn-secondary px-3 py-1.5">Make Guest</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@* Admins *@
+<div class="card mt-6 overflow-x-auto p-0">
+    <h2 class="px-4 pt-4 text-lg font-semibold">Admins <span class="text-sm font-normal text-gray-400">(@Model.Admins.Count)</span></h2>
+    @if (!Model.Admins.Any())
+    {
+        <p class="p-4 text-sm text-gray-500">No admins found.</p>
+    }
+    else
+    {
+        <table class="mt-2 w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Joined</th><th class="px-4 py-3"></th></tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var admin in Model.Admins)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@admin.FullName</td>
+                        <td class="px-4 py-3 text-gray-500">@admin.Email</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">@admin.CreatedAt.ToLocalTime().ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3 text-right">
+                            <form asp-action="MakeGuest" asp-route-id="@admin.Id" method="post"
+                                  onsubmit="return confirm('Change this admin back to a Guest?');">
+                                <button type="submit" class="btn-secondary px-3 py-1.5">Make Guest</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

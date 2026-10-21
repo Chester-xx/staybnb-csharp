@@ -1,0 +1,14 @@
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Cls(string controller) => string.Equals(current, controller, StringComparison.OrdinalIgnoreCase)
+        ? "bg-rose-50 font-semibold text-brand"
+        : "text-gray-700 hover:bg-gray-50";
+}
+<nav class="space-y-1 px-3 pb-6">
+    <a asp-area="Host" asp-controller="Dashboard" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Dashboard")">Dashboard</a>
+    <a asp-area="Host" asp-controller="Properties" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Properties")">My Properties</a>
+    <a asp-area="Host" asp-controller="BookingRequests" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("BookingRequests")">Booking Requests</a>
+    <a asp-area="Host" asp-controller="CheckIns" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("CheckIns")">Guest Check-ins</a>
+    <a asp-area="" asp-controller="Messages" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Messages")">Messages</a>
+    <a asp-area="" asp-controller="Notifications" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Notifications")">Notifications</a>
+</nav>

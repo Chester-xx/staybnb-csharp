@@ -1,118 +1,117 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using staybnb_csharp.Models;
+using staybnb_csharp.Services;
 
 namespace staybnb_csharp.Areas.Identity.Pages.Account.Manage;
 
-public class IndexModel : PageModel
+public class IndexModel(
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signInManager,
+    IFileStorageService files) : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    public string UserId { get; set; } = string.Empty;
 
-    public IndexModel(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-    }
+    /// <summary>Changes when the picture changes, so the browser does not show a cached image.</summary>
+    public string? PictureVersion { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
-    public string? Username { get; set; }
+    public bool HasPicture => PictureVersion is not null;
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     [TempData]
     public string? StatusMessage { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
+    [BindProperty]
+    public IFormFile? ProfilePicture { get; set; }
+
     public class InputModel
     {
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [Phone]
-        [Display(Name = "Phone number")]
-        public string? PhoneNumber { get; set; }
-    }
+        [Required, StringLength(50)]
+        [Display(Name = "First name")]
+        public string FirstName { get; set; } = default!;
 
-    private async Task LoadAsync(ApplicationUser user)
-    {
-        var userName = await _userManager.GetUserNameAsync(user);
-        var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-        Username = userName;
-
-        Input = new InputModel
-        {
-            PhoneNumber = phoneNumber
-        };
+        [Required, StringLength(50)]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; } = default!;
     }
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null)
-        {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        }
+        var user = await userManager.GetUserAsync(User);
+        if (user is null) return NotFound();
 
-        await LoadAsync(user);
+        Input = new InputModel { FirstName = user.FirstName, LastName = user.LastName };
+        SetPicture(user);
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null)
+        var user = await userManager.GetUserAsync(User);
+        if (user is null) return NotFound();
+
+        if (ProfilePicture is not null)
         {
-            return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            var error = files.ValidateImage(ProfilePicture);
+            if (error is not null) ModelState.AddModelError(nameof(ProfilePicture), error);
         }
 
         if (!ModelState.IsValid)
         {
-            await LoadAsync(user);
+            SetPicture(user);
             return Page();
         }
 
-        var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-        if (Input.PhoneNumber != phoneNumber)
+        var oldPicture = user.ProfilePictureUrl;
+        string? newPicture = null;
+
+        if (ProfilePicture is not null)
         {
-            var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            if (!setPhoneResult.Succeeded)
-            {
-                StatusMessage = "Unexpected error when trying to set phone number.";
-                return RedirectToPage();
-            }
+            newPicture = await files.SaveProfilePictureAsync(ProfilePicture);
+            user.ProfilePictureUrl = newPicture;
         }
 
-        await _signInManager.RefreshSignInAsync(user);
-        StatusMessage = "Your profile has been updated";
+        user.FirstName = Input.FirstName.Trim();
+        user.LastName = Input.LastName.Trim();
+
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            if (newPicture is not null) files.DeleteProfilePicture(newPicture);
+            StatusMessage = "Error: your profile could not be updated.";
+            return RedirectToPage();
+        }
+
+        if (newPicture is not null && oldPicture is not null) files.DeleteProfilePicture(oldPicture);
+
+        await signInManager.RefreshSignInAsync(user);
+        StatusMessage = "Your profile has been updated.";
         return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostRemovePictureAsync()
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user is null) return NotFound();
+
+        if (user.ProfilePictureUrl is not null)
+        {
+            files.DeleteProfilePicture(user.ProfilePictureUrl);
+            user.ProfilePictureUrl = null;
+            await userManager.UpdateAsync(user);
+        }
+
+        StatusMessage = "Your profile picture was removed.";
+        return RedirectToPage();
+    }
+
+    private void SetPicture(ApplicationUser user)
+    {
+        UserId = user.Id;
+        PictureVersion = user.ProfilePictureUrl;
     }
 }

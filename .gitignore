@@ -15,4 +15,6 @@ Thumbs.db
 node_modules/
 
 # priv data
-PrivateUploads/
+PrivateUploads/documents/
+PrivateUploads/profile-pictures/*
+!PrivateUploads/profile-pictures/default.svg

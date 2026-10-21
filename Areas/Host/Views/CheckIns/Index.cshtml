@@ -1,0 +1,57 @@
+@model List<GuestCheckIn>
+@{
+    ViewData["Title"] = "Guest Check-ins";
+
+    string Badge(CheckInStatus status) => status switch
+    {
+        CheckInStatus.Submitted => "bg-amber-100 text-amber-800",
+        CheckInStatus.Verified => "bg-green-100 text-green-800",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    string Label(CheckInStatus status) => status switch
+    {
+        CheckInStatus.Submitted => "Awaiting verification",
+        CheckInStatus.Verified => "Verified",
+        _ => "In progress"
+    };
+}
+
+<div class="card overflow-x-auto p-0">
+    @if (!Model.Any())
+    {
+        <p class="p-6 text-sm text-gray-500">No guest check-ins yet.</p>
+    }
+    else
+    {
+        <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr>
+                    <th class="px-4 py-3">Guest</th>
+                    <th class="px-4 py-3">Property</th>
+                    <th class="px-4 py-3">Stay</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var checkIn in Model)
+                {
+                    var booking = checkIn.Booking;
+                    <tr>
+                        <td class="px-4 py-3">@booking.Guest.FullName<div class="text-xs text-gray-400">@booking.Guest.Email</div></td>
+                        <td class="px-4 py-3">@booking.Property.Title</td>
+                        <td class="px-4 py-3 whitespace-nowrap">@booking.CheckInDate.ToString("d MMM") &ndash; @booking.CheckOutDate.ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3"><span class="rounded-full px-3 py-1 text-xs font-semibold @Badge(checkIn.Status)">@Label(checkIn.Status)</span></td>
+                        <td class="px-4 py-3 text-right">
+                            @if (checkIn.Status != CheckInStatus.InProgress)
+                            {
+                                <a asp-action="Details" asp-route-id="@checkIn.Id" class="font-medium text-brand hover:underline">@(checkIn.Status == CheckInStatus.Submitted ? "Review" : "View")</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

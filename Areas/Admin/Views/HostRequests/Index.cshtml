@@ -1,0 +1,51 @@
+@model List<HostApplication>
+@{
+    ViewData["Title"] = "Host Requests";
+    var filter = ViewData["Filter"] as ApplicationStatus?;
+
+    string Tab(ApplicationStatus? value) => filter == value
+        ? "bg-brand text-white"
+        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200";
+}
+
+<div class="mb-4 flex flex-wrap gap-2">
+    <a asp-action="Index" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(null)">All</a>
+    <a asp-action="Index" asp-route-status="@ApplicationStatus.Pending" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Pending)">Pending</a>
+    <a asp-action="Index" asp-route-status="@ApplicationStatus.Approved" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Approved)">Approved</a>
+    <a asp-action="Index" asp-route-status="@ApplicationStatus.Rejected" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Rejected)">Rejected</a>
+</div>
+
+<div class="card overflow-x-auto p-0">
+    @if (!Model.Any())
+    {
+        <p class="p-6 text-sm text-gray-500">No applications found.</p>
+    }
+    else
+    {
+        <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr>
+                    <th class="px-4 py-3">Applicant</th>
+                    <th class="px-4 py-3">Property</th>
+                    <th class="px-4 py-3">City</th>
+                    <th class="px-4 py-3">Applied</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var application in Model)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@application.ApplicationUser.FullName<div class="text-xs text-gray-400">@application.ApplicationUser.Email</div></td>
+                        <td class="px-4 py-3">@application.Property.Title</td>
+                        <td class="px-4 py-3">@application.Property.City</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-gray-500">@application.AppliedAt.ToLocalTime().ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3"><partial name="_ApplicationStatusBadge" model="application.Status" /></td>
+                        <td class="px-4 py-3 text-right"><a asp-action="Details" asp-route-id="@application.Id" class="font-medium text-brand hover:underline">Review</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

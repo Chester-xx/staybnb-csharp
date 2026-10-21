@@ -2,9 +2,8 @@
 
 @if (!String.IsNullOrEmpty(Model))
 {
-    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
-    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    var isError = Model.StartsWith("Error");
+    <div class="mb-4 rounded-lg px-4 py-3 text-sm @(isError ? "bg-red-50 text-red-800" : "bg-green-50 text-green-800")" role="alert">
         @Model
     </div>
 }

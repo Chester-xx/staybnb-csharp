@@ -9,16 +9,14 @@
     }
 }
 
-<h1>Manage your account</h1>
+<div class="mx-auto max-w-4xl">
+    <h1 class="mb-6 text-3xl font-bold">Account settings</h1>
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+        <div class="md:col-span-1">
             <partial name="_ManageNav" />
         </div>
-        <div class="col-md-9">
+        <div class="md:col-span-3">
             @RenderBody()
         </div>
     </div>

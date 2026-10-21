@@ -1,5 +1,4 @@
 @model staybnb_csharp.ViewModels.HostApplicationViewModel
-@using staybnb_csharp.Models.Enums
 @{
     ViewData["Title"] = "Become a Host";
 }
@@ -8,59 +7,7 @@
     <h1 class="mb-1 text-3xl font-bold">Become a Host</h1>
     <p class="mb-6 text-gray-500">Tell us about your property. An administrator will review your application.</p>
 
-    <div class="card">
-        <form asp-action="Apply" method="post" enctype="multipart/form-data" class="space-y-5">
-            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600" role="alert"></div>
-
-            <div>
-                <label asp-for="Title" class="form-label"></label>
-                <input asp-for="Title" class="form-input" placeholder="e.g. Cozy Forest Cabin" />
-                <span asp-validation-for="Title" class="form-error"></span>
-            </div>
-
-            <div>
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" rows="5" class="form-input"></textarea>
-                <span asp-validation-for="Description" class="form-error"></span>
-            </div>
-
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div>
-                    <label asp-for="PropertyType" class="form-label"></label>
-                    <select asp-for="PropertyType" asp-items="Html.GetEnumSelectList<PropertyType>()" class="form-input"></select>
-                    <span asp-validation-for="PropertyType" class="form-error"></span>
-                </div>
-                <div>
-                    <label asp-for="PricePerNight" class="form-label"></label>
-                    <input asp-for="PricePerNight" type="number" step="0.01" min="1" class="form-input" />
-                    <span asp-validation-for="PricePerNight" class="form-error"></span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div>
-                    <label asp-for="City" class="form-label"></label>
-                    <input asp-for="City" class="form-input" />
-                    <span asp-validation-for="City" class="form-error"></span>
-                </div>
-                <div>
-                    <label asp-for="Address" class="form-label"></label>
-                    <input asp-for="Address" class="form-input" />
-                    <span asp-validation-for="Address" class="form-error"></span>
-                </div>
-            </div>
-
-            <div>
-                <label for="Images" class="form-label">Property images</label>
-                <input id="Images" name="Images" type="file" multiple accept="image/jpeg,image/png,image/webp"
-                       class="block w-full text-sm text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-gray-100 file:px-4 file:py-2.5 file:text-sm file:font-semibold hover:file:bg-gray-200" />
-                <p class="mt-1 text-xs text-gray-500">At least 1 and up to 10 images. JPG, PNG or WebP, 5 MB each.</p>
-                <span asp-validation-for="Images" class="form-error"></span>
-            </div>
-
-            <button type="submit" class="btn-primary w-full">Submit application</button>
-        </form>
-    </div>
+    <partial name="_PropertyApplicationForm" model="Model" />
 </div>
 
 @section Scripts {

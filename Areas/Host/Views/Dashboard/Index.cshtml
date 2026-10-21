@@ -1,0 +1,32 @@
+@model HostDashboardViewModel
+@{
+    ViewData["Title"] = "Host Dashboard";
+
+    var stats = new (string Label, int Value, string Note)[]
+    {
+        ("Total Properties", Model.TotalProperties, $"{Model.ActiveProperties} active"),
+        ("Total Bookings", Model.TotalBookings, "All time"),
+        ("Booking Requests", Model.PendingBookingRequests, "Awaiting your response"),
+        ("Pending Applications", Model.PendingApplications, "Awaiting admin review")
+    };
+}
+
+<div class="card">
+    <h2 class="text-2xl font-bold text-brand">Welcome back, @Model.HostName!</h2>
+    <p class="mt-1 text-sm text-gray-500">Here's what's happening with your properties today.</p>
+    <div class="mt-4 flex flex-wrap gap-3">
+        <a asp-controller="Properties" asp-action="Create" class="btn-secondary">+ Add New Property</a>
+        <a asp-controller="BookingRequests" asp-action="Index" class="btn-secondary">View Booking Requests</a>
+    </div>
+</div>
+
+<div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    @foreach (var stat in stats)
+    {
+        <div class="card">
+            <p class="text-sm text-gray-500">@stat.Label</p>
+            <p class="mt-1 text-3xl font-bold">@stat.Value</p>
+            <p class="mt-1 text-xs text-gray-400">@stat.Note</p>
+        </div>
+    }
+</div>

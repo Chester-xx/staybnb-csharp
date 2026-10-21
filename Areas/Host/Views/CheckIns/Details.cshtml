@@ -1,0 +1,72 @@
+@model GuestCheckIn
+@{
+    var booking = Model.Booking;
+    ViewData["Title"] = "Review Check-in";
+    var rules = CheckInSettings.FromJson(Model.CheckInProcess.StepsJson).Rules;
+}
+
+<div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to guest check-ins</a></div>
+
+<div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+    <div class="space-y-6 xl:col-span-2">
+        <div class="card">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">@booking.Property.Title</h2>
+                    <p class="text-sm text-gray-500">@booking.CheckInDate.ToString("d MMM") &ndash; @booking.CheckOutDate.ToString("d MMM yyyy") &middot; @booking.NumberOfGuests guest@(booking.NumberOfGuests == 1 ? "" : "s")</p>
+                </div>
+                <span class="rounded-full px-3 py-1 text-xs font-semibold @(Model.Status == CheckInStatus.Verified ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800")">
+                    @(Model.Status == CheckInStatus.Verified ? "Verified" : "Awaiting verification")
+                </span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="mb-3 text-lg font-semibold">Documents</h3>
+            <ul class="divide-y divide-gray-100 text-sm">
+                @foreach (var document in Model.Documents.OrderBy(d => d.DocumentType))
+                {
+                    <li class="flex items-center justify-between py-3">
+                        <div>
+                            <p class="font-medium">@document.DocumentType</p>
+                            <p class="text-xs text-gray-400">@document.Status</p>
+                        </div>
+                        <a asp-area="" asp-controller="GuestDocuments" asp-action="Open" asp-route-id="@document.Id" target="_blank"
+                           class="btn-secondary px-3 py-1.5">Open</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        @if (rules.Any())
+        {
+            <div class="card">
+                <h3 class="mb-3 text-lg font-semibold">House rules the guest agreed to</h3>
+                <ul class="list-disc space-y-1 pl-5 text-sm text-gray-700">
+                    @foreach (var rule in rules)
+                    {
+                        <li>@rule</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <div class="space-y-6">
+        <div class="card text-sm">
+            <h3 class="mb-2 font-semibold">Guest</h3>
+            <p>@booking.Guest.FullName</p>
+            <p class="text-gray-500">@booking.Guest.Email</p>
+        </div>
+
+        @if (Model.Status == CheckInStatus.Submitted)
+        {
+            <div class="card space-y-3">
+                <p class="text-sm text-gray-600">Check each document, then verify to check the guest in.</p>
+                <form asp-action="Verify" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn-primary w-full">Verify documents &amp; check in</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

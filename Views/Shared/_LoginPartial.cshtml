@@ -10,12 +10,18 @@
 
     <div class="relative">
         <button type="button" data-toggle="user-menu"
-                class="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium hover:shadow">
+                class="flex items-center gap-2 rounded-full border border-gray-300 py-1.5 pl-1.5 pr-4 text-sm font-medium hover:shadow">
+            <img src="@Url.Action("Show", "ProfilePictures", new { area = "", id = user?.Id, v = user?.ProfilePictureUrl })"
+                 alt="" class="h-7 w-7 rounded-full object-cover" />
             <span>@displayName</span>
             <span aria-hidden="true">&#9662;</span>
         </button>
-        <div id="user-menu" data-menu class="absolute right-0 z-20 mt-2 hidden w-48 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="block px-4 py-2 text-sm hover:bg-gray-50">Account</a>
+        <div id="user-menu" data-menu class="absolute right-0 z-20 mt-2 hidden w-52 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
+            @if (User.IsInRole("Guest"))
+            {
+                <a asp-area="" asp-controller="HostApplication" asp-action="Status" class="block px-4 py-2 text-sm hover:bg-gray-50">Host application status</a>
+            }
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="block px-4 py-2 text-sm hover:bg-gray-50">Account settings</a>
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                 <button type="submit" class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50">Logout</button>
             </form>

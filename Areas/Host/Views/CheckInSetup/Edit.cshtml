@@ -1,0 +1,82 @@
+@model CheckInSetupViewModel
+@{
+    ViewData["Title"] = "Check-in Setup";
+
+    // First-time setup starts with the ID document ticked.
+    var selectedDocuments = Model.RequiredDocuments.Any() || !Model.IsFirstSetup
+        ? Model.RequiredDocuments
+        : new List<string> { CheckInSettings.DocumentOptions[0] };
+
+    // One rule row; used for existing rules and for the template the Add button clones.
+    Func<string, object> RuleRow = @<div data-rule-row class="flex gap-2">
+        <input name="Rules" value="@item" maxlength="200" placeholder="e.g. No smoking indoors" class="form-input" />
+        <button type="button" data-rule-remove class="btn-secondary px-3">Remove</button>
+    </div>;
+}
+
+<div class="mx-auto max-w-2xl">
+    <div class="mb-4"><a asp-controller="Properties" asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to my properties</a></div>
+
+    <h2 class="text-2xl font-bold">@Model.PropertyTitle</h2>
+    <p class="mb-6 mt-1 text-sm text-gray-500">
+        Set the house rules and the document guests must upload when they check in.
+        @if (Model.IsFirstSetup)
+        {
+            <span class="font-medium text-gray-700">Saving this for the first time will list your property.</span>
+        }
+    </p>
+
+    <div class="card">
+        <form asp-action="Edit" asp-route-id="@Model.PropertyId" method="post" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600" role="alert"></div>
+
+            <div>
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-input" />
+                <span asp-validation-for="Title" class="form-error"></span>
+            </div>
+
+            <fieldset>
+                <legend class="form-label">Required documents</legend>
+                <p class="mb-2 text-xs text-gray-500">Guests must upload each document you tick when they check in.</p>
+                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    @foreach (var option in CheckInSettings.DocumentOptions)
+                    {
+                        <label class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2.5 text-sm hover:bg-gray-50">
+                            <input type="checkbox" name="RequiredDocuments" value="@option" checked="@selectedDocuments.Contains(option)"
+                                   class="rounded border-gray-300 text-brand focus:ring-brand" />
+                            @option
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="RequiredDocuments" class="form-error"></span>
+            </fieldset>
+
+            <div>
+                <span class="form-label">House rules</span>
+                <div data-rule-list class="space-y-2">
+                    @foreach (var rule in Model.Rules)
+                    {
+                        @RuleRow(rule)
+                    }
+                    @if (!Model.Rules.Any())
+                    {
+                        @RuleRow(string.Empty)
+                    }
+                </div>
+                <button type="button" data-rule-add class="btn-secondary mt-3">+ Add rule</button>
+                <p class="mt-1 text-xs text-gray-500">Up to 20 rules. Empty boxes are ignored.</p>
+            </div>
+
+            <button type="submit" class="btn-primary w-full">Save check-in setup</button>
+        </form>
+    </div>
+</div>
+
+<template data-rule-template>
+    @RuleRow(string.Empty)
+</template>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

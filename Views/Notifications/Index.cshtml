@@ -1,0 +1,74 @@
+@model NotificationListViewModel
+@using staybnb_csharp.Models.Enums
+@{
+    ViewData["Title"] = "Notifications";
+
+    var chips = new (string Key, string Label, int Count)[]
+    {
+        ("all", "All", Model.All),
+        ("unread", "Unread", Model.Unread),
+        ("read", "Read", Model.Read),
+        ("today", "Today", Model.Today)
+    };
+
+    string Chip(string key) => Model.Filter == key
+        ? "bg-brand text-white"
+        : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50";
+
+    string TypeLabel(NotificationType type) => type switch
+    {
+        NotificationType.HostApplication => "Application",
+        NotificationType.Booking => "Booking",
+        NotificationType.CheckIn => "Check-in",
+        NotificationType.Message => "Message",
+        _ => type.ToString()
+    };
+}
+
+<div class="mx-auto max-w-3xl">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap gap-2">
+            @foreach (var chip in chips)
+            {
+                <a asp-action="Index" asp-route-filter="@chip.Key" class="rounded-full px-4 py-1.5 text-sm font-medium @Chip(chip.Key)">
+                    @chip.Label <span class="opacity-70">(@chip.Count)</span>
+                </a>
+            }
+        </div>
+
+        @if (Model.Unread > 0)
+        {
+            <form asp-action="MarkAllRead" asp-route-filter="@Model.Filter" method="post">
+                <button type="submit" class="btn-secondary px-3 py-1.5">Mark all as read</button>
+            </form>
+        }
+    </div>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="card text-center text-gray-500">No notifications here.</div>
+    }
+
+    <div class="space-y-2">
+        @foreach (var notification in Model.Items)
+        {
+            <div class="card flex items-center gap-4 p-4 @(notification.IsRead ? "" : "border-brand/40 bg-rose-50")">
+                <span class="h-2.5 w-2.5 shrink-0 rounded-full @(notification.IsRead ? "bg-gray-200" : "bg-brand")" title="@(notification.IsRead ? "Read" : "Unread")"></span>
+
+                <a asp-action="Open" asp-route-id="@notification.Id" class="min-w-0 flex-1">
+                    <p class="truncate text-sm @(notification.IsRead ? "" : "font-semibold")">@notification.Title</p>
+                    <p class="mt-0.5 text-xs text-gray-500">
+                        <span class="rounded-full bg-gray-100 px-2 py-0.5 font-medium text-gray-700">@TypeLabel(notification.Type)</span>
+                        &middot; @notification.CreatedAt.ToLocalTime().ToString("d MMM yyyy HH:mm")
+                    </p>
+                </a>
+
+                <form asp-action="Toggle" asp-route-id="@notification.Id" asp-route-filter="@Model.Filter" method="post">
+                    <button type="submit" class="text-xs font-medium text-gray-500 hover:text-brand">
+                        @(notification.IsRead ? "Mark unread" : "Mark read")
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

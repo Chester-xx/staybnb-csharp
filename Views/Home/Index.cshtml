@@ -1,8 +1,68 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model PropertyListViewModel
+@using staybnb_csharp.Models.Enums
+@{
+    ViewData["Title"] = "Find your next stay";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1 class="mb-6 text-3xl font-bold tracking-tight">Find your next holiday</h1>
+
+<form asp-action="Index" method="get" class="mb-8 flex flex-wrap items-end gap-3">
+    <div>
+        <label for="city" class="form-label">City</label>
+        <select id="city" name="city" class="form-input min-w-44">
+            <option value="">All cities</option>
+            @foreach (var city in Model.Cities)
+            {
+                <option value="@city" selected="@(city == Model.City)">@city</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="propertyType" class="form-label">Property type</label>
+        <select id="propertyType" name="propertyType" class="form-input min-w-44">
+            <option value="">All types</option>
+            @foreach (var type in Enum.GetValues<PropertyType>())
+            {
+                <option value="@type" selected="@(type == Model.PropertyType)">@type</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn-primary">Search</button>
+    @if (!string.IsNullOrEmpty(Model.City) || Model.PropertyType is not null)
+    {
+        <a asp-action="Index" class="btn-secondary">Clear</a>
+    }
+</form>
+
+@if (!Model.Properties.Any())
+{
+    var filtered = !string.IsNullOrEmpty(Model.City) || Model.PropertyType is not null;
+    <div class="card text-center text-gray-500">@(filtered ? "No properties match your search." : "No available properties.")</div>
+}
+else
+{
+    <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @foreach (var property in Model.Properties)
+        {
+            var cover = property.Images.FirstOrDefault();
+
+            <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="group block">
+                <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-200">
+                    @if (cover is not null)
+                    {
+                        <img src="~/uploads/properties/@cover.ImageUrl" alt="@property.Title"
+                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    }
+                    <span class="absolute bottom-3 right-3 rounded-lg bg-black/60 px-2 py-1 text-xs font-medium text-white">
+                        @property.Images.Count photos
+                    </span>
+                </div>
+                <div class="mt-3">
+                    <p class="text-xs text-gray-500">@property.City &middot; @property.PropertyType</p>
+                    <h2 class="truncate font-semibold">@property.Title</h2>
+                    <p class="text-sm"><span class="font-semibold">R @property.PricePerNight.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)</span> <span class="text-gray-500">per night</span></p>
+                </div>
+            </a>
+        }
+    </div>
+}

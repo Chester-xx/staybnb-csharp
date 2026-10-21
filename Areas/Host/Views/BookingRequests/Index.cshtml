@@ -1,0 +1,62 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "Booking Requests";
+
+    string Badge(BookingStatus status) => status switch
+    {
+        BookingStatus.Approved => "bg-green-100 text-green-800",
+        BookingStatus.CheckedIn => "bg-blue-100 text-blue-800",
+        BookingStatus.Rejected or BookingStatus.Cancelled => "bg-red-100 text-red-800",
+        BookingStatus.Completed => "bg-gray-100 text-gray-700",
+        _ => "bg-amber-100 text-amber-800"
+    };
+}
+
+<div class="card overflow-x-auto p-0">
+    @if (!Model.Any())
+    {
+        <p class="p-6 text-sm text-gray-500">No booking requests yet.</p>
+    }
+    else
+    {
+        <table class="w-full text-left text-sm">
+            <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                <tr>
+                    <th class="px-4 py-3">Guest</th>
+                    <th class="px-4 py-3">Property</th>
+                    <th class="px-4 py-3">Dates</th>
+                    <th class="px-4 py-3">Guests</th>
+                    <th class="px-4 py-3">Total</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td class="px-4 py-3">@booking.Guest.FullName<div class="text-xs text-gray-400">@booking.Guest.Email</div></td>
+                        <td class="px-4 py-3">@booking.Property.Title</td>
+                        <td class="px-4 py-3 whitespace-nowrap">@booking.CheckInDate.ToString("d MMM") &ndash; @booking.CheckOutDate.ToString("d MMM yyyy")</td>
+                        <td class="px-4 py-3">@booking.NumberOfGuests</td>
+                        <td class="px-4 py-3 whitespace-nowrap">R @booking.TotalPrice.ToString("N2")</td>
+                        <td class="px-4 py-3"><span class="rounded-full px-3 py-1 text-xs font-semibold @Badge(booking.Status)">@booking.Status</span></td>
+                        <td class="px-4 py-3">
+                            @if (booking.Status == BookingStatus.Pending)
+                            {
+                                <div class="flex justify-end gap-2">
+                                    <form asp-action="Approve" asp-route-id="@booking.Id" method="post">
+                                        <button type="submit" class="btn-primary px-3 py-1.5">Approve</button>
+                                    </form>
+                                    <form asp-action="Reject" asp-route-id="@booking.Id" method="post">
+                                        <button type="submit" class="btn-secondary px-3 py-1.5 text-red-600">Reject</button>
+                                    </form>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

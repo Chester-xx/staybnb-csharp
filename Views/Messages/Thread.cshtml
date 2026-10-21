@@ -1,0 +1,39 @@
+@model MessageThreadViewModel
+@{
+    ViewData["Title"] = Model.Other.FullName;
+}
+
+<div class="mx-auto max-w-3xl">
+    <div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to messages</a></div>
+
+    <div class="card space-y-4">
+        <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
+            <img src="@Url.Action("Show", "ProfilePictures", new { area = "", id = Model.Other.Id, v = Model.Other.ProfilePictureUrl })"
+                 alt="" class="h-10 w-10 rounded-full object-cover" />
+            <h2 class="text-lg font-semibold">@Model.Other.FullName</h2>
+        </div>
+
+        <div class="space-y-3">
+            @foreach (var message in Model.Messages)
+            {
+                var mine = message.SenderId == Model.CurrentUserId;
+
+                <div class="flex @(mine ? "justify-end" : "justify-start")">
+                    <div class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm @(mine ? "bg-brand text-white" : "bg-gray-100 text-gray-900")">
+                        <p class="whitespace-pre-line break-words">@message.Content</p>
+                        <p class="mt-1 text-[11px] @(mine ? "text-white/70" : "text-gray-400")">@message.Timestamp.ToLocalTime().ToString("d MMM HH:mm")</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <form asp-action="Send" method="post" class="space-y-3 border-t border-gray-100 pt-4">
+            <input type="hidden" name="toUserId" value="@Model.Other.Id" />
+            <label for="content" class="sr-only">Reply</label>
+            <textarea id="content" name="content" rows="3" maxlength="2000" required placeholder="Write a reply…" class="form-input"></textarea>
+            <div class="flex justify-end">
+                <button type="submit" class="btn-primary">Send</button>
+            </div>
+        </form>
+    </div>
+</div>

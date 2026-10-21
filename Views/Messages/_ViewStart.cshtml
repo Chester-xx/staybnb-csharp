@@ -1,0 +1,15 @@
+@* Hosts and admins see these shared pages inside their own dashboard layout; guests keep the main layout. *@
+@{
+    if (User.IsInRole(Roles.Host))
+    {
+        Layout = "_DashboardLayout";
+        ViewData["Sidebar"] = "_HostSidebar";
+        ViewData["Panel"] = "host";
+    }
+    else if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.SuperAdmin))
+    {
+        Layout = "_DashboardLayout";
+        ViewData["Sidebar"] = "_AdminSidebar";
+        ViewData["Panel"] = "admin";
+    }
+}

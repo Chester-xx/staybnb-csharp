@@ -1,0 +1,42 @@
+@model ComposeMessageViewModel
+@{
+    ViewData["Title"] = "New message";
+}
+
+<div class="mx-auto max-w-2xl">
+    <div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to messages</a></div>
+
+    <div class="card">
+        <form asp-action="Send" method="post" class="space-y-4">
+            @if (Model.ToUserId is not null)
+            {
+                <input type="hidden" name="toUserId" value="@Model.ToUserId" />
+                <p class="text-sm"><span class="text-gray-500">To:</span> <span class="font-semibold">@Model.RecipientName</span></p>
+            }
+            else if (!Model.Recipients.Any())
+            {
+                <p class="rounded-lg bg-gray-50 px-4 py-3 text-sm text-gray-600">There is nobody you can message yet.</p>
+            }
+            else
+            {
+                <div>
+                    <label for="toUserId" class="form-label">To</label>
+                    <select id="toUserId" name="toUserId" required class="form-input">
+                        <option value="">Choose a person…</option>
+                        @foreach (var recipient in Model.Recipients)
+                        {
+                            <option value="@recipient.Value">@recipient.Text</option>
+                        }
+                    </select>
+                </div>
+            }
+
+            <div>
+                <label for="content" class="form-label">Message</label>
+                <textarea id="content" name="content" rows="6" maxlength="2000" required class="form-input">@Model.Content</textarea>
+            </div>
+
+            <button type="submit" class="btn-primary w-full">Send message</button>
+        </form>
+    </div>
+</div>
