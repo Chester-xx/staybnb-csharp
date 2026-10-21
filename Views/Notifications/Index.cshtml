@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Notifications";
 
+    // Filter chips with their counts
     var chips = new (string Key, string Label, int Count)[]
     {
         ("all", "All", Model.All),
@@ -11,10 +12,12 @@
         ("today", "Today", Model.Today)
     };
 
+    // Helper function to get the chip class based on the active filter
     string Chip(string key) => Model.Filter == key
         ? "bg-brand text-white"
         : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50";
 
+    // Helper function to get the label based on notification type
     string TypeLabel(NotificationType type) => type switch
     {
         NotificationType.HostApplication => "Application",
@@ -25,8 +28,10 @@
     };
 }
 
+<!-- Notifications page -->
 <div class="mx-auto max-w-3xl">
     <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <!-- Filter chips -->
         <div class="flex flex-wrap gap-2">
             @foreach (var chip in chips)
             {
@@ -36,6 +41,7 @@
             }
         </div>
 
+        <!-- Mark all as read -->
         @if (Model.Unread > 0)
         {
             <form asp-action="MarkAllRead" asp-route-filter="@Model.Filter" method="post">
@@ -44,14 +50,17 @@
         }
     </div>
 
+    <!-- Empty state -->
     @if (!Model.Items.Any())
     {
         <div class="card text-center text-gray-500">No notifications here.</div>
     }
 
+    <!-- Notification list -->
     <div class="space-y-2">
         @foreach (var notification in Model.Items)
         {
+            <!-- Notification row -->
             <div class="card flex items-center gap-4 p-4 @(notification.IsRead ? "" : "border-brand/40 bg-rose-50")">
                 <span class="h-2.5 w-2.5 shrink-0 rounded-full @(notification.IsRead ? "bg-gray-200" : "bg-brand")" title="@(notification.IsRead ? "Read" : "Unread")"></span>
 
@@ -63,6 +72,7 @@
                     </p>
                 </a>
 
+                <!-- Toggle read form -->
                 <form asp-action="Toggle" asp-route-id="@notification.Id" asp-route-filter="@Model.Filter" method="post">
                     <button type="submit" class="text-xs font-medium text-gray-500 hover:text-brand">
                         @(notification.IsRead ? "Mark unread" : "Mark read")

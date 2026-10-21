@@ -3,13 +3,13 @@
     ViewData["Title"] = "My Properties";
 }
 
-@* Empty form: the checkboxes and buttons below attach to it via the form attribute,
-   so it never nests around the per-card Activate/Deactivate forms. *@
+<!-- Empty form for deleting properties -->
 <form id="delete-form" asp-action="Delete" method="post"></form>
-
 <div class="mb-4 flex flex-wrap items-center justify-end gap-3">
+    <!-- Link to add new property -->
     <a asp-action="Create" class="btn-primary">+ Add New Property</a>
 
+    <!-- Selection controls -->
     @if (Model.Any())
     {
         <button type="button" data-select-toggle class="btn-secondary">Remove Property</button>
@@ -22,12 +22,12 @@
         </div>
     }
 </div>
-
+<!-- Empty state -->
 @if (!Model.Any())
 {
     <div class="card text-center text-gray-500">You don't have any properties yet.</div>
 }
-
+<!-- Property list -->
 <div class="space-y-4">
     @foreach (var application in Model)
     {
@@ -38,13 +38,12 @@
             <input type="checkbox" form="delete-form" name="ids" value="@property.Id" data-select-box
                    aria-label="Select @property.Title for removal"
                    class="hidden h-5 w-5 shrink-0 self-center rounded border-gray-300 text-brand focus:ring-brand" />
-
+            
             @if (cover is not null)
             {
                 <a asp-area="" asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id"
                    class="group block shrink-0 overflow-hidden rounded-xl sm:w-52" title="View public listing">
-                    <img src="~/uploads/properties/@cover.ImageUrl" alt="@property.Title"
-                         class="h-32 w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <img src="~/uploads/properties/@cover.ImageUrl" alt="@property.Title" class="h-32 w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 </a>
             }
 

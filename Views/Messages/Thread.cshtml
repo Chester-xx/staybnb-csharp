@@ -3,19 +3,24 @@
     ViewData["Title"] = Model.Other.FullName;
 }
 
+<!-- Message thread page -->
 <div class="mx-auto max-w-3xl">
+    <!-- Link back to messages -->
     <div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to messages</a></div>
 
     <div class="card space-y-4">
+        <!-- Other user -->
         <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
             <img src="@Url.Action("Show", "ProfilePictures", new { area = "", id = Model.Other.Id, v = Model.Other.ProfilePictureUrl })"
                  alt="" class="h-10 w-10 rounded-full object-cover" />
             <h2 class="text-lg font-semibold">@Model.Other.FullName</h2>
         </div>
 
+        <!-- Messages -->
         <div class="space-y-3">
             @foreach (var message in Model.Messages)
             {
+                // Check if the message was sent by the current user
                 var mine = message.SenderId == Model.CurrentUserId;
 
                 <div class="flex @(mine ? "justify-end" : "justify-start")">
@@ -27,6 +32,7 @@
             }
         </div>
 
+        <!-- Reply form -->
         <form asp-action="Send" method="post" class="space-y-3 border-t border-gray-100 pt-4">
             <input type="hidden" name="toUserId" value="@Model.Other.Id" />
             <label for="content" class="sr-only">Reply</label>

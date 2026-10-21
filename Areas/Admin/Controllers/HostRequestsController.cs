@@ -49,7 +49,7 @@ namespace staybnb_csharp.Areas.Admin.Controllers
             var application = await LoadApplicationAsync(id);
             
             // Return model with view or return not found header
-            ret urn application is null ? NotFound() : View(application);
+            return application is null ? NotFound() : View(application);
         }
 
         // Post only

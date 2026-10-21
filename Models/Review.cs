@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace staybnb_csharp.Models
 {
-    // Database design only; no review functionality is implemented.
+    // Review model
     public class Review
     {
         public int Id { get; set; }

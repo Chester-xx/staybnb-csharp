@@ -2,6 +2,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Guest check-in model
     public class GuestCheckIn
     {
         public int Id { get; set; }

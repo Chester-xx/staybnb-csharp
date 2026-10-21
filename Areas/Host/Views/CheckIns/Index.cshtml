@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Guest Check-ins";
 
+    // Helper function to get the badge class based on check-in status
     string Badge(CheckInStatus status) => status switch
     {
         CheckInStatus.Submitted => "bg-amber-100 text-amber-800",
@@ -9,6 +10,7 @@
         _ => "bg-gray-100 text-gray-600"
     };
 
+    // Helper function to get the label based on check-in status
     string Label(CheckInStatus status) => status switch
     {
         CheckInStatus.Submitted => "Awaiting verification",
@@ -16,12 +18,15 @@
         _ => "In progress"
     };
 }
-
+<!-- Check in index -->
 <div class="card overflow-x-auto p-0">
+    
+    <!-- Empty state -->
     @if (!Model.Any())
     {
         <p class="p-6 text-sm text-gray-500">No guest check-ins yet.</p>
     }
+    <!-- Check in table -->
     else
     {
         <table class="w-full text-left text-sm">

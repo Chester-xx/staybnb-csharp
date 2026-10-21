@@ -3,6 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Activity log model
     public class ActivityLog
     {
         public int Id { get; set; }

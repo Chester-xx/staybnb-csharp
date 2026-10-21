@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Dashboard Overview";
 
+    // Define the stats to display in the dashboard
     var stats = new (string Label, int Value, string Note)[]
     {
         ("Total Users", Model.TotalUsers, "Registered accounts"),
@@ -12,6 +13,7 @@
     };
 }
 
+<!-- Dashboard stats -->
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
     @foreach (var stat in stats)
     {
@@ -23,7 +25,9 @@
     }
 </div>
 
+<!-- Recent activity and host applications -->
 <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
+    <!-- Recent activity -->
     <div class="card">
         <h2 class="mb-4 text-lg font-semibold">Recent Activity</h2>
         @if (!Model.RecentActivity.Any())
@@ -52,15 +56,18 @@
         }
     </div>
 
+    <!-- Recent host applications -->
     <div class="card">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold">Recent Host Applications</h2>
             <a asp-controller="HostRequests" asp-action="Index" class="text-sm font-medium text-brand hover:underline">View all</a>
         </div>
+        <!-- None -->
         @if (!Model.RecentApplications.Any())
         {
             <p class="text-sm text-gray-500">No applications yet.</p>
         }
+        <!-- Applications -->
         else
         {
             <div class="overflow-x-auto">

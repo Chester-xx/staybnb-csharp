@@ -1,9 +1,12 @@
 @{
+    // Get the current controller
     var current = ViewContext.RouteData.Values["controller"]?.ToString();
+    // Helper function to get the link class for the current controller
     string Cls(string controller) => string.Equals(current, controller, StringComparison.OrdinalIgnoreCase)
         ? "bg-rose-50 font-semibold text-brand"
         : "text-gray-700 hover:bg-gray-50";
 }
+<!-- Host navigation -->
 <nav class="space-y-1 px-3 pb-6">
     <a asp-area="Host" asp-controller="Dashboard" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Dashboard")">Dashboard</a>
     <a asp-area="Host" asp-controller="Properties" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm @Cls("Properties")">My Properties</a>

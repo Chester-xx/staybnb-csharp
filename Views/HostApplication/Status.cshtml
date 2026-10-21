@@ -4,28 +4,35 @@
     ViewData["Title"] = "Host Application Status";
 }
 
+<!-- Host application status page -->
 <div class="mx-auto max-w-3xl">
+    <!-- Page title and apply link -->
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold">Host Application Status</h1>
+        <!-- Apply link when no application is pending -->
         @if (!Model.Any(a => a.Status == ApplicationStatus.Pending))
         {
             <a asp-action="Apply" class="btn-primary">Apply as a host</a>
         }
     </div>
 
+    <!-- Info message -->
     @if (TempData["Info"] is string info)
     {
         <div class="mb-4 rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-800">@info</div>
     }
 
+    <!-- Empty state -->
     @if (!Model.Any())
     {
         <div class="card text-center text-gray-500">You haven't applied to become a host yet.</div>
     }
 
+    <!-- Application list -->
     <div class="space-y-4">
         @foreach (var application in Model)
         {
+            // Get the badge class based on application status
             var badge = application.Status switch
             {
                 ApplicationStatus.Approved => "bg-green-100 text-green-800",
@@ -33,6 +40,7 @@
                 _ => "bg-amber-100 text-amber-800"
             };
 
+            <!-- Application card -->
             <div class="card">
                 <div class="flex items-start justify-between gap-4">
                     <div>
@@ -42,6 +50,7 @@
                     <span class="rounded-full px-3 py-1 text-xs font-semibold @badge">@application.Status</span>
                 </div>
 
+                <!-- Rejection reason if provided -->
                 @if (application.Status == ApplicationStatus.Rejected && !string.IsNullOrWhiteSpace(application.RejectionReason))
                 {
                     <div class="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">

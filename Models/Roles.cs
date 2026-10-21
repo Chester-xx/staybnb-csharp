@@ -1,5 +1,6 @@
 namespace staybnb_csharp.Models
 {
+    // Role names
     public static class Roles
     {
         public const string Guest = "Guest";
@@ -7,7 +8,6 @@ namespace staybnb_csharp.Models
         public const string Admin = "Admin";
         public const string SuperAdmin = "SuperAdmin";
 
-        // For [Authorize(Roles = Roles.AdminOrSuperAdmin)] on admin dashboard routes.
         public const string AdminOrSuperAdmin = Admin + "," + SuperAdmin;
     }
 }

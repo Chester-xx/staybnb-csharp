@@ -1,5 +1,6 @@
 namespace staybnb_csharp.ViewModels
 {
+    // Check-in setup view model
     public class CheckInSetupViewModel
     {
         public int PropertyId { get; set; }
@@ -17,6 +18,7 @@ namespace staybnb_csharp.ViewModels
         public List<string> Rules { get; set; } = new();
     }
 
+    // Host dashboard view model
     public class HostDashboardViewModel
     {
         public string HostName { get; set; } = string.Empty;

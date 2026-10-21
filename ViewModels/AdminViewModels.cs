@@ -3,6 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.ViewModels
 {
+    // Admin dashboard view model
     public class AdminDashboardViewModel
     {
         public int TotalUsers { get; set; }
@@ -15,6 +16,7 @@ namespace staybnb_csharp.ViewModels
         public List<HostApplication> RecentApplications { get; set; } = new();
     }
 
+    // User management view model
     public class UserManagementViewModel
     {
         public string? Search { get; set; }
@@ -23,6 +25,7 @@ namespace staybnb_csharp.ViewModels
         public List<ApplicationUser> Admins { get; set; } = new();
     }
 
+    // Activity log list view model (filtered by type, paged)
     public class ActivityLogListViewModel
     {
         public List<ActivityLog> Items { get; set; } = new();

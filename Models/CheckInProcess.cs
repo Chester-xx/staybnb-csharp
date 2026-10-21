@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace staybnb_csharp.Models
 {
+    // Check-in process model, the host setup for a property
     public class CheckInProcess
     {
         public int Id { get; set; }
@@ -12,7 +13,6 @@ namespace staybnb_csharp.Models
         [Required, MaxLength(200)]
         public string Title { get; set; } = string.Empty;
 
-        // JSON holding the host's rules, steps and required documents.
         public string StepsJson { get; set; } = "[]";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

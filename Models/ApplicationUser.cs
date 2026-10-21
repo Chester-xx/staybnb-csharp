@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace staybnb_csharp.Models
 {
+    // Application user model
     public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; } = string.Empty;

@@ -4,6 +4,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Booking model
     public class Booking
     {
         public int Id { get; set; }

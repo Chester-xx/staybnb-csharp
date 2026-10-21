@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace staybnb_csharp.Models
 {
+    // Message model
     public class Message
     {
         public int Id { get; set; }

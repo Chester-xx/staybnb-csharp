@@ -3,7 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
-    // Database design only; no payment functionality is implemented.
+    // Payment model
     public class Payment
     {
         public int Id { get; set; }

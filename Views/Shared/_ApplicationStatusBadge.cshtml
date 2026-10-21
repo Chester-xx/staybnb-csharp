@@ -1,6 +1,7 @@
 @using staybnb_csharp.Models.Enums
 @model ApplicationStatus
 @{
+    // Get the badge class based on application status
     var badge = Model switch
     {
         ApplicationStatus.Approved => "bg-green-100 text-green-800",
@@ -8,4 +9,5 @@
         _ => "bg-amber-100 text-amber-800"
     };
 }
+<!-- Status badge -->
 <span class="rounded-full px-3 py-1 text-xs font-semibold @badge">@Model</span>

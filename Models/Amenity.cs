@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace staybnb_csharp.Models
 {
-    // Database design only; no amenity functionality is implemented.
+    // Amenity model
     public class Amenity
     {
         public int Id { get; set; }

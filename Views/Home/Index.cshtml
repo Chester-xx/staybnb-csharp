@@ -4,8 +4,10 @@
     ViewData["Title"] = "Find your next stay";
 }
 
+<!-- Page title -->
 <h1 class="mb-6 text-3xl font-bold tracking-tight">Find your next holiday</h1>
 
+<!-- Search form -->
 <form asp-action="Index" method="get" class="mb-8 flex flex-wrap items-end gap-3">
     <div>
         <label for="city" class="form-label">City</label>
@@ -34,18 +36,22 @@
     }
 </form>
 
+<!-- Property results -->
 @if (!Model.Properties.Any())
 {
+    // Check if any filter is applied
     var filtered = !string.IsNullOrEmpty(Model.City) || Model.PropertyType is not null;
     <div class="card text-center text-gray-500">@(filtered ? "No properties match your search." : "No available properties.")</div>
 }
 else
 {
+    <!-- Property grid -->
     <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @foreach (var property in Model.Properties)
         {
             var cover = property.Images.FirstOrDefault();
 
+            <!-- Property card -->
             <a asp-controller="Properties" asp-action="Details" asp-route-id="@property.Id" class="group block">
                 <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-200">
                     @if (cover is not null)

@@ -4,22 +4,28 @@
     var booking = Model.Booking;
     ViewData["Title"] = "Check-in";
 
+    // Wizard step names
     var steps = new[] { "House rules", "Documents", "Review & submit" };
 }
 
+<!-- Check-in wizard -->
 <div class="mx-auto max-w-2xl">
+    <!-- Link back to my bookings -->
     <div class="mb-4"><a asp-controller="Bookings" asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to my bookings</a></div>
 
+    <!-- Check-in title and stay details -->
     <h1 class="text-3xl font-bold">@Model.Booking.Property.CheckInProcess!.Title</h1>
     <p class="mb-6 mt-1 text-sm text-gray-500">
         @booking.Property.Title &middot; @booking.CheckInDate.ToString("d MMM") &ndash; @booking.CheckOutDate.ToString("d MMM yyyy")
     </p>
 
+    <!-- Step indicator -->
     @if (Model.Step <= 3)
     {
         <ol class="mb-6 flex items-center gap-2 text-sm">
             @for (var i = 0; i < steps.Length; i++)
             {
+                // Get the step number and its state class
                 var number = i + 1;
                 var state = number == Model.Step ? "bg-brand text-white" : number < Model.Step ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-500";
                 <li class="flex items-center gap-2">
@@ -31,9 +37,11 @@
         </ol>
     }
 
+    <!-- Current step content -->
     @switch (Model.Step)
     {
         case 1:
+            <!-- Step 1 house rules -->
             <div class="card space-y-4">
                 <h2 class="text-lg font-semibold">House rules</h2>
                 @if (Model.Settings.Rules.Any())
@@ -50,6 +58,7 @@
                     <p class="text-sm text-gray-500">The host has not listed any specific house rules.</p>
                 }
 
+                <!-- Accept rules form -->
                 <form asp-action="AcceptRules" asp-route-id="@booking.Id" method="post" class="space-y-4 border-t border-gray-100 pt-4">
                     <label class="flex items-start gap-2 text-sm">
                         <input type="checkbox" name="accepted" value="true" class="mt-0.5 rounded border-gray-300 text-brand focus:ring-brand" />
@@ -61,10 +70,12 @@
             break;
 
         case 2:
+            <!-- Step 2 documents -->
             <div class="card space-y-4">
                 <h2 class="text-lg font-semibold">Upload your documents</h2>
                 <p class="text-sm text-gray-500">JPG, PNG, WebP or PDF, up to 5 MB each. Only you and the host can view them.</p>
 
+                <!-- Document upload slots -->
                 @foreach (var slot in Model.Slots)
                 {
                     <div class="rounded-xl border border-gray-200 p-4">
@@ -76,6 +87,7 @@
                             }
                         </div>
 
+                        <!-- Upload form -->
                         <form asp-action="UploadDocument" asp-route-id="@booking.Id" method="post" enctype="multipart/form-data" class="mt-3 flex flex-wrap items-center gap-3">
                             <input type="hidden" name="documentType" value="@slot.DocumentType" />
                             <input type="file" name="file" required accept="image/jpeg,image/png,image/webp,application/pdf"
@@ -93,6 +105,7 @@
 
                 <div class="flex items-center justify-between border-t border-gray-100 pt-4">
                     <a asp-action="Index" asp-route-id="@booking.Id" asp-route-step="1" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Rules</a>
+                    <!-- Continue only when all documents are uploaded -->
                     @if (Model.AllDocumentsUploaded)
                     {
                         <a asp-action="Index" asp-route-id="@booking.Id" asp-route-step="3" class="btn-primary">Continue to review</a>
@@ -106,9 +119,11 @@
             break;
 
         case 3:
+            <!-- Step 3 review and submit -->
             <div class="card space-y-4">
                 <h2 class="text-lg font-semibold">Review and submit</h2>
                 <ul class="divide-y divide-gray-100 text-sm">
+                    <!-- Uploaded documents -->
                     @foreach (var slot in Model.Slots)
                     {
                         <li class="flex items-center justify-between py-2">
@@ -121,6 +136,7 @@
 
                 <div class="flex items-center justify-between border-t border-gray-100 pt-4">
                     <a asp-action="Index" asp-route-id="@booking.Id" asp-route-step="2" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Documents</a>
+                    <!-- Submit form -->
                     <form asp-action="Submit" asp-route-id="@booking.Id" method="post">
                         <button type="submit" class="btn-primary">Submit check-in</button>
                     </form>
@@ -129,7 +145,9 @@
             break;
 
         default:
+            // Check if the guest is checked in
             var verified = booking.Status == BookingStatus.CheckedIn || Model.CheckIn?.Status == CheckInStatus.Verified;
+            <!-- Step 4 submitted or checked in -->
             <div class="card text-center">
                 @if (verified)
                 {

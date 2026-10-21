@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Booking Requests";
 
+    // Helper function to get the badge class based on booking status
     string Badge(BookingStatus status) => status switch
     {
         BookingStatus.Approved => "bg-green-100 text-green-800",
@@ -11,12 +12,14 @@
         _ => "bg-amber-100 text-amber-800"
     };
 }
-
+<!-- Booking requests card -->
 <div class="card overflow-x-auto p-0">
+    <!-- Empty state -->
     @if (!Model.Any())
     {
         <p class="p-6 text-sm text-gray-500">No booking requests yet.</p>
     }
+    <!-- Booking requests table  -->
     else
     {
         <table class="w-full text-left text-sm">

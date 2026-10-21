@@ -1,4 +1,5 @@
 @{
+    // Get the sidebar partial, defaults to the admin sidebar
     var sidebar = ViewData["Sidebar"] as string ?? "_AdminSidebar";
 }
 <!DOCTYPE html>
@@ -11,6 +12,7 @@
 </head>
 <body class="min-h-screen bg-gray-950 font-sans text-gray-900">
     <div class="flex min-h-screen flex-col md:flex-row">
+        <!-- Sidebar -->
         <aside class="w-full shrink-0 border-b border-gray-200 bg-white md:w-64 md:border-b-0 md:border-r">
             <div class="px-6 py-5">
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="text-xl font-bold tracking-tight text-brand">
@@ -21,6 +23,7 @@
         </aside>
 
         <div class="flex min-w-0 flex-1 flex-col">
+            <!-- Header with page title and account links -->
             <header class="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
                 <h1 class="text-lg font-semibold">@ViewData["Title"]</h1>
                 <div class="flex items-center gap-4">
@@ -30,6 +33,7 @@
                 </div>
             </header>
 
+            <!-- Page content with success and error messages -->
             <main class="flex-1 p-6">
                 @if (TempData["Success"] is string success)
                 {
@@ -44,6 +48,7 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/app.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

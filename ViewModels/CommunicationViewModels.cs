@@ -4,6 +4,7 @@ using staybnb_csharp.Models;
 
 namespace staybnb_csharp.ViewModels
 {
+    // Notification list view model (filtered, with counts per filter)
     public class NotificationListViewModel
     {
         public List<Notification> Items { get; set; } = new();
@@ -14,8 +15,10 @@ namespace staybnb_csharp.ViewModels
         public int Today { get; set; }
     }
 
+    // Conversation summary record (the other user, the last message and the unread count)
     public record ConversationSummary(ApplicationUser Other, Message Last, int Unread);
 
+    // Message thread view model
     public class MessageThreadViewModel
     {
         public ApplicationUser Other { get; set; } = null!;
@@ -23,9 +26,9 @@ namespace staybnb_csharp.ViewModels
         public string CurrentUserId { get; set; } = string.Empty;
     }
 
+    // Compose message view model
     public class ComposeMessageViewModel
     {
-        /// <summary>Set when the recipient is fixed (e.g. coming from a property page).</summary>
         public string? ToUserId { get; set; }
         public string? RecipientName { get; set; }
         public List<SelectListItem> Recipients { get; set; } = new();

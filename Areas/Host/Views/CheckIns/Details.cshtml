@@ -1,14 +1,17 @@
 @model GuestCheckIn
 @{
+    // Get booking and rules
     var booking = Model.Booking;
     ViewData["Title"] = "Review Check-in";
     var rules = CheckInSettings.FromJson(Model.CheckInProcess.StepsJson).Rules;
 }
 
+<!-- Link back to guest check ins -->
 <div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to guest check-ins</a></div>
-
+<!-- Check in details -->
 <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
     <div class="space-y-6 xl:col-span-2">
+        <!-- Card for property details + check in and check out dates, plus check in status -->
         <div class="card">
             <div class="flex items-start justify-between gap-4">
                 <div>
@@ -20,7 +23,7 @@
                 </span>
             </div>
         </div>
-
+        <!-- Card for documents -->
         <div class="card">
             <h3 class="mb-3 text-lg font-semibold">Documents</h3>
             <ul class="divide-y divide-gray-100 text-sm">
@@ -37,7 +40,7 @@
                 }
             </ul>
         </div>
-
+        <!-- Card for house rules -->
         @if (rules.Any())
         {
             <div class="card">
@@ -53,12 +56,14 @@
     </div>
 
     <div class="space-y-6">
+        <!-- Card for guest details -->
         <div class="card text-sm">
             <h3 class="mb-2 font-semibold">Guest</h3>
             <p>@booking.Guest.FullName</p>
             <p class="text-gray-500">@booking.Guest.Email</p>
         </div>
 
+        <!-- Card for check in actions -->
         @if (Model.Status == CheckInStatus.Submitted)
         {
             <div class="card space-y-3">

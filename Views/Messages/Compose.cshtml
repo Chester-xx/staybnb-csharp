@@ -3,11 +3,15 @@
     ViewData["Title"] = "New message";
 }
 
+<!-- Compose message page -->
 <div class="mx-auto max-w-2xl">
+    <!-- Link back to messages -->
     <div class="mb-4"><a asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to messages</a></div>
 
     <div class="card">
+        <!-- Message form -->
         <form asp-action="Send" method="post" class="space-y-4">
+            <!-- Recipient, fixed or chosen from the allowed list -->
             @if (Model.ToUserId is not null)
             {
                 <input type="hidden" name="toUserId" value="@Model.ToUserId" />

@@ -2,19 +2,23 @@
 @{
     ViewData["Title"] = "User Management";
 }
-
+<!-- user search input form -->
 <form asp-action="Index" method="get" class="mb-4 flex max-w-md gap-2">
     <input name="search" value="@Model.Search" placeholder="Search by name or email" class="form-input" />
     <button type="submit" class="btn-primary">Search</button>
 </form>
 
+<!-- Guest list -->
 @* Guests *@
 <div class="card overflow-x-auto p-0">
+    <!-- guest count -->
     <h2 class="px-4 pt-4 text-lg font-semibold">Guests <span class="text-sm font-normal text-gray-400">(@Model.Guests.Count)</span></h2>
+    <!-- Empty state -->
     @if (!Model.Guests.Any())
     {
         <p class="p-4 text-sm text-gray-500">No guests found.</p>
     }
+    <!-- Guest rows -->
     else
     {
         <table class="mt-2 w-full text-left text-sm">
@@ -41,13 +45,17 @@
     }
 </div>
 
+<!-- Host list -->
 @* Hosts *@
 <div class="card mt-6 overflow-x-auto p-0">
+    <!-- Host count -->
     <h2 class="px-4 pt-4 text-lg font-semibold">Hosts <span class="text-sm font-normal text-gray-400">(@Model.Hosts.Count)</span></h2>
+    <!-- Empty state -->
     @if (!Model.Hosts.Any())
     {
         <p class="p-4 text-sm text-gray-500">No hosts found.</p>
     }
+    <!-- Host rows -->
     else
     {
         <table class="mt-2 w-full text-left text-sm">
@@ -74,13 +82,17 @@
     }
 </div>
 
+<!-- Admin list -->
 @* Admins *@
 <div class="card mt-6 overflow-x-auto p-0">
+    <!-- Admin count -->
     <h2 class="px-4 pt-4 text-lg font-semibold">Admins <span class="text-sm font-normal text-gray-400">(@Model.Admins.Count)</span></h2>
+    <!-- Empty state -->
     @if (!Model.Admins.Any())
     {
         <p class="p-4 text-sm text-gray-500">No admins found.</p>
     }
+    <!-- Admins list  -->
     else
     {
         <table class="mt-2 w-full text-left text-sm">

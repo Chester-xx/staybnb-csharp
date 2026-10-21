@@ -3,11 +3,14 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+<!-- Signed in user menu, login and register links when signed out -->
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
+    // Use the full name, falling back to the username
     var displayName = user is null || string.IsNullOrWhiteSpace(user.FullName) ? User.Identity?.Name : user.FullName;
 
+    <!-- User menu button and dropdown -->
     <div class="relative">
         <button type="button" data-toggle="user-menu"
                 class="flex items-center gap-2 rounded-full border border-gray-300 py-1.5 pl-1.5 pr-4 text-sm font-medium hover:shadow">
@@ -17,11 +20,13 @@
             <span aria-hidden="true">&#9662;</span>
         </button>
         <div id="user-menu" data-menu class="absolute right-0 z-20 mt-2 hidden w-52 rounded-xl border border-gray-200 bg-white py-2 shadow-lg">
+            <!-- Host application status link for guests -->
             @if (User.IsInRole("Guest"))
             {
                 <a asp-area="" asp-controller="HostApplication" asp-action="Status" class="block px-4 py-2 text-sm hover:bg-gray-50">Host application status</a>
             }
             <a asp-area="Identity" asp-page="/Account/Manage/Index" class="block px-4 py-2 text-sm hover:bg-gray-50">Account settings</a>
+            <!-- Logout form -->
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                 <button type="submit" class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50">Logout</button>
             </form>

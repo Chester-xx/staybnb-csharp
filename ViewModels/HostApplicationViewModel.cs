@@ -3,6 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.ViewModels
 {
+    // Host application view model
     public class HostApplicationViewModel
     {
         [Required, StringLength(100)]

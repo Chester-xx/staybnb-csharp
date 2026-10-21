@@ -3,6 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Host application model
     public class HostApplication
     {
         public int Id { get; set; }

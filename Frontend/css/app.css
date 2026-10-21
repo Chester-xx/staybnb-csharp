@@ -1,18 +1,13 @@
 @import "tailwindcss";
 
-/*
-  Dark theme.
-  The colour scales below are redefined once, so the existing utility classes used across the views
-  (bg-gray-50, text-gray-900, border-gray-200, bg-green-100 ...) switch to dark automatically.
-  Edit the values here to refine the look. gray-950 is the page background and "surface" is the card colour.
-*/
+/* Dark theme */
 @theme {
   --color-brand: #e5232d;
   --color-brand-dark: #c01a23;
   --color-surface: #0c0d10;
   --font-sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* Neutrals: inverted scale (50 = subtle fill, 900 = main text) */
+  /* Neutrals */
   --color-gray-50: #14161b;
   --color-gray-100: #1a1d24;
   --color-gray-200: #2f3543;
@@ -25,7 +20,7 @@
   --color-gray-900: #f3f5f9;
   --color-gray-950: #050506;
 
-  /* Status colours (badges and alerts) */
+  /* Status colours */
   --color-rose-50: #2a1012;
   --color-rose-100: #3a1316;
   --color-green-50: #0f2a1a;
@@ -45,12 +40,11 @@
   --color-blue-800: #93c5fd;
 }
 
-/* Native controls (select lists, date pickers, scrollbars, checkboxes) render dark too. */
+/* Native controls to dark */
 :root {
   color-scheme: dark;
 }
 
-/* Views that still use bg-white get the dark surface colour. */
 .bg-white {
   background-color: var(--color-surface);
 }

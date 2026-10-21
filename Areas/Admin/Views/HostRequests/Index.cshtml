@@ -3,23 +3,24 @@
     ViewData["Title"] = "Host Requests";
     var filter = ViewData["Filter"] as ApplicationStatus?;
 
-    string Tab(ApplicationStatus? value) => filter == value
-        ? "bg-brand text-white"
-        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200";
+    // Helper to get tab class based on the current filter
+    string Tab(ApplicationStatus? value) => filter == value ? "bg-brand text-white" : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200";
 }
-
+<!-- Tab navigation  -->
 <div class="mb-4 flex flex-wrap gap-2">
     <a asp-action="Index" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(null)">All</a>
     <a asp-action="Index" asp-route-status="@ApplicationStatus.Pending" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Pending)">Pending</a>
     <a asp-action="Index" asp-route-status="@ApplicationStatus.Approved" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Approved)">Approved</a>
     <a asp-action="Index" asp-route-status="@ApplicationStatus.Rejected" class="rounded-full px-4 py-1.5 text-sm font-medium @Tab(ApplicationStatus.Rejected)">Rejected</a>
 </div>
-
+<!-- Application list -->
 <div class="card overflow-x-auto p-0">
+    <!-- Empty state -->
     @if (!Model.Any())
     {
         <p class="p-6 text-sm text-gray-500">No applications found.</p>
     }
+    <!-- Application table  -->
     else
     {
         <table class="w-full text-left text-sm">

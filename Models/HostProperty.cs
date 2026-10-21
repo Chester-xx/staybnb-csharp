@@ -4,6 +4,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Host property model
     public class HostProperty
     {
         public int Id { get; set; }
@@ -29,9 +30,9 @@ namespace staybnb_csharp.Models
 
         public PropertyType PropertyType { get; set; }
 
-        // Stays false until the host application is approved.
         public bool IsActive { get; set; }
 
+        // Methods
         public ICollection<PropertyImage> Images { get; set; } = new List<PropertyImage>();
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();

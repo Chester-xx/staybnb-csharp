@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace staybnb_csharp.Models
 {
-    // Database design only; no wishlist functionality is implemented.
+    // Wishlist item model
     public class WishlistItem
     {
         public int Id { get; set; }

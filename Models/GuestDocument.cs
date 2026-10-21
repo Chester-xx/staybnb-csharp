@@ -3,6 +3,7 @@ using staybnb_csharp.Models.Enums;
 
 namespace staybnb_csharp.Models
 {
+    // Guest document model
     public class GuestDocument
     {
         public int Id { get; set; }
@@ -13,7 +14,7 @@ namespace staybnb_csharp.Models
         [Required, MaxLength(100)]
         public string DocumentType { get; set; } = string.Empty;
 
-        // Holds the generated stored file name (timestamp + suffix + extension).
+        // Generated stored file name
         [Required, MaxLength(200)]
         public string FileName { get; set; } = string.Empty;
 

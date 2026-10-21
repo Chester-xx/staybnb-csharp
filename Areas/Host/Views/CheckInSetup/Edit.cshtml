@@ -2,12 +2,12 @@
 @{
     ViewData["Title"] = "Check-in Setup";
 
-    // First-time setup starts with the ID document ticked.
+    // First time setup starts with the ID document ticked
     var selectedDocuments = Model.RequiredDocuments.Any() || !Model.IsFirstSetup
         ? Model.RequiredDocuments
         : new List<string> { CheckInSettings.DocumentOptions[0] };
 
-    // One rule row; used for existing rules and for the template the Add button clones.
+    // One rule row - used for existing rules and for the template the add button clones
     Func<string, object> RuleRow = @<div data-rule-row class="flex gap-2">
         <input name="Rules" value="@item" maxlength="200" placeholder="e.g. No smoking indoors" class="form-input" />
         <button type="button" data-rule-remove class="btn-secondary px-3">Remove</button>
@@ -15,9 +15,12 @@
 }
 
 <div class="mx-auto max-w-2xl">
+    <!-- Link back to my properties -->
     <div class="mb-4"><a asp-controller="Properties" asp-action="Index" class="text-sm font-medium text-gray-600 hover:text-brand">&larr; Back to my properties</a></div>
 
+    <!-- Property title -->
     <h2 class="text-2xl font-bold">@Model.PropertyTitle</h2>
+    <!-- Prompt area -->
     <p class="mb-6 mt-1 text-sm text-gray-500">
         Set the house rules and the document guests must upload when they check in.
         @if (Model.IsFirstSetup)
@@ -27,15 +30,17 @@
     </p>
 
     <div class="card">
+        <!-- Form for editing the property -->
         <form asp-action="Edit" asp-route-id="@Model.PropertyId" method="post" class="space-y-6">
             <div asp-validation-summary="ModelOnly" class="text-sm text-red-600" role="alert"></div>
-
+            <!-- Title -->
             <div>
                 <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-input" />
                 <span asp-validation-for="Title" class="form-error"></span>
             </div>
 
+            <!-- Required documents -->
             <fieldset>
                 <legend class="form-label">Required documents</legend>
                 <p class="mb-2 text-xs text-gray-500">Guests must upload each document you tick when they check in.</p>
@@ -52,6 +57,7 @@
                 <span asp-validation-for="RequiredDocuments" class="form-error"></span>
             </fieldset>
 
+            <!-- House rules -->
             <div>
                 <span class="form-label">House rules</span>
                 <div data-rule-list class="space-y-2">
@@ -72,11 +78,12 @@
         </form>
     </div>
 </div>
-
+<!-- Template for rule row  -->
 <template data-rule-template>
     @RuleRow(string.Empty)
 </template>
 
+<!-- Script section off partial validation -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
